@@ -1,0 +1,210 @@
+h1. Hydra Project Infrastructure
+
+h2. Hydra Project Identity & Structure
+
+The headings of the following sections are copied directly from Producing Open Source Software Section 2.2: Getting Started :: Starting from What You Have [Fogel, 19-29].  
+
+# Mission Statement
+# State that the Project is Free
+# Features and Requirements List
+# Development Status
+# Downloads
+# Version Control & Bug Tracker Access
+# Communications Channels
+# Developer Guidelines
+# Documentation
+# Example output & Screenshots
+# License
+
+We should make sure we have all of these things covered for _each_ of the Hydra component projects -- 
+
+* ActiveFedora
+* Solrizer
+* Opinionated Metadata
+* Hydra Repository Plugin for Rails
+
+If we treat each of the Hydra heads as its own collaborative open source project, we should do the same for each of them.
+
+* Hydrangea -- Self-Deposit of Articles & Datasets?
+* Hydra ETD
+* AIMS -- Archival Collections Management
+* Image Collections
+* Moving Images & Audio
+* Automated Workflow tools & Administrative UI
+* Repository Administration Tool
+
+h3. Name
+
+Fogel suggests considering the following when choosing the name for a project [Fogel, 21-22]:
+
+* Gives some Idea what the project does
+* Is easy to remember
+* Is not the same as some other project's name and does not infringe on any trademarks
+* Is available as a domain name
+
+Is Hydra a safe name to use?
+
+h3. Mission Statement
+
+h4. Brief Mission Statement
+
+???
+
+h4. Fuller Mission Statement
+
+Hydra grew from a number of developers, librarians, archivists and project managers scratching a collective itch. This itch grew from the fact that humanity is producing an ever-growing corpus of rich, complex digital information.  We care deeply about capturing this information, curating it, disseminating it, and preserving it for the long term.  In 2008 at the advent of the Hydra project, the tools for curating, presenting, and searching through this content were sorely lacking.  We sought to remedy this by producing software that
+
+* provide rich, flexible, faceted search & discovery interfaces
+* allow for, and actively encourage, re-use & re-purposing of content
+* embrace a diversity of metadata 
+* lend themselves to being re-used or re-purposed to suit the needs of varying users with distinctive content
+* satisfy a baseline of requirements for long-term preservation of content
+
+In addition to these technical goals, we aimed to create the technologies in ways that facilitate and encourage
+
+* inter-institutional collaboration on the code bases
+* exploring, identifying and fostering best practices (for repositories, developers, archivists and project managers alike)
+* development of specialized applications or "Heads" base on the technologies
+
+Our vision for achieving this focuses around the idea of allowing a single content repository to store & deliver content through a plethora of interfaces that are specialized around particular users interacting with particular content -- one repository body interacting with a wide range of people through its many heads.  Hence the name Hydra.
+
+h3.  State that the Project is Free
+
+The front page must make it unambiguously clear that the project is open source. … State up front, right below the mission statement, that the project is "free software" or "open source software", and give the exact license. [Fogel, 23]
+
+h3.  Features and Requirements List
+
+…
+
+h3.  Development Status
+
+How do we represent the current status of Hydra to outsiders?  How do we ensure that this stays up to date?
+
+Near-term Goals & Needs
+
+h4. Development Status Page
+
+Release Cycle
+Past releases
+How we define "progress"
+Continuous Integration?
+Real-Time RoadMap
+
+Advice from Fogel:
+
+Don't be afraid of looking unready, and don't give in to the temptation to hype the development status. Everyone knows that software evolves by stages; there's no shame in saying "This is alpha software with known bugs. It runs, and works at least some of the time, but use at your own risk." Such language won't scare away the kinds of developers you need at that stage. As for users, one of the worst things a project can do is attract users before the software is ready for them. A reputation for instability or bugginess
+is very hard to shake, once acquired. Conservativism pays off in the long run; it's always better for the software to be more stable than the user expected than less, and pleasant surprises produce the best kind of word-of-mouth. [Fogel, 24]
+
+
+h3.  Downloads
+
+What forms of downloads should we provide?
+* git repository
+* Any code libraries distributes as Ruby Gems
+* Rails template installer?
+* … war file versions of particular heads?
+* Debian packages? RPMs? Mac OS X .dmg installer?
+
+h3.  Version Control & Bug Tracker Access (& Continuous Integration)
+
+h4. Version Control: Git & github
+
+Reference info for using git & github
+Description of code structure
+Links to each component's github project (active_fedora, solrizer, opinonated_metadata)
+
+h4. Bug Tracker: Jira hosted by DuraSpace
+
+Epics, Stories, Bugs, Documentation, Technical Tasks 
+Roadmap in Jira … Greenhopper
+Saved searches
+Ticket workflow: Open, In Progress, In Review/In Testing, Closed
+
+h4. Continuous Integration: Hudson
+
+What Hudson is, where we have it running.
+
+h3.  Communications Channels
+
+Mailing Lists
+irc
+wiki … meeting/call notes
+Weekly Committers Call
+Meetings 
+Workshops & Training Events
+
+Commit Emails?
+
+
+h3.  Developer Guidelines
+
+Developer guidelines are not so much technical as social: they explain how the developers interact with each other and with the users, and ultimately how things get done.
+[...]
+•	pointers to forums for interaction with other developers
+•	instructions on how to report bugs and submit patches
+•	some indication of how development is usually done—is the project a benevolent dictatorship, a democracy, or something else [Fogel, 26]
+
+h3.  Documentation
+
+•	Tell the reader clearly how much technical expertise they're expected to have.
+•	Describe clearly and thoroughly how to set up the software, and somewhere near the beginning of the documentation, tell the user how to run some sort of diagnostic test or simple command to confirm that they've set things up correctly. 
+•	Give one tutorial-style example of how to do a common task. 
+•	Label the areas where the documentation is known to be incomplete. By showing the readers that you are aware of its deficiencies, you align yourself with their point of view. 
+
+[Fogel, 27]
+
+
+h4. Availability of Documentation
+
+Documentation should be available from two places: online (directly from the web site), and in the downloadable distribution of the software [Fogel, 28]
+
+h4. Non-Technical Documentation
+
+wiki…
+FAQ?
+
+h4. Developer Documentation
+
+API Documentation on RDoc.info
+README files in the code base (& on GitHub)
+Read the tests -- RSpec & Cucumber...
+wiki…
+Content Modeling: Concepts, Vocabulary, Guidelines, Best Practices, Conventions
+FAQ?
+
+
+h3.  Example output & Screenshots
+
+h3. License
+
+h4. Choice of License
+
+Apache2 License?
+
+h4. Applying the Licence 
+
+We must be consistent...
+
+h2. Website
+
+h2. Practices
+
+Avoid private discussions [Fogel 32]
+Nip Rudeness in the Bud [Fogel 33]
+Always record decisions in tickets
+Guidelines for writing a good Jira ticket...
+Code Reivews [Fogel 34-35]
+Reviews should be public. Even on occasions when I have been sitting in the same physical room with developers, and one of us has made a commit, we take care not to do the review verbally in the room, but to send it to the development mailing list instead. Everyone benefits from seeing the review happen. People follow the commentary and sometimes find flaws in it, and even when they don't, it still reminds them that review is an expected, regular activity, like washing the dishes or mowing the lawn.
+
+h2. Social & Political Infrastructure
+
+Forkability
+* Collaboration
+* Components
+
+Governance
+
+ActiveFedora: Benevolent Dictator (aka community-approved arbitrator)
+Solrizer: Benevolent Dictator (aka community-approved arbitrator) .. but should change soon
+OM: Benevolent Dictator (aka community-approved arbitrator) .. but should change with maturity
+Hydra Rails Plugin: ???
