@@ -209,4 +209,4 @@ Solrizer: Benevolent Dictator (aka community-approved arbitrator) .. but should 
 OM: Benevolent Dictator (aka community-approved arbitrator) .. but should change with maturity
 Hydra Rails Plugin: ???
 
-fn1. Producing Open Source Software. Fogel, Karl. http://producingoss.com/
+fn1. "Producing Open Source Software":http://producingoss.com/. Fogel, Karl. "http://producingoss.com/":http://producingoss.com/
