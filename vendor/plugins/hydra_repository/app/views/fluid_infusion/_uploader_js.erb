@@ -4,6 +4,9 @@
                  type: "fluid.swfUploadManager",
       
                  options: {
+					// Set the file metadata values
+					postParams: {"file":"", "contents":"", "type":""},
+					
                     // Set the uploadURL to the URL for posting files to your server.
                     uploadURL: "<%= file_assets_path(:container_id=> params[:container_id], :only_path => false) %>",
       
@@ -13,8 +16,10 @@
              },
       
       listeners: {
-				  onFileStart: function(file){	myUploader.uploadManager.addFileParam(file,"asset[HydraMetadata][description]", $('#asset_HydraMetadata_description').val());
-					myUploader.uploadManager.addFileParam(file,"asset[HydraMetadata][contents]", $('#asset_HydraMetadata_contents').val());
+				  onFileStart: function(file){	
+					myUploader.uploadManager.options['postParams']['file'] = file;
+					myUploader.uploadManager.options['postParams']['contents'] = $('#asset_HydraMetadata_contents').val();
+					myUploader.uploadManager.options['postParams']['description'] = $('#asset_HydraMetadata_description').val();					
 					},
 	
                   onFileSuccess: function (file, serverData){},
