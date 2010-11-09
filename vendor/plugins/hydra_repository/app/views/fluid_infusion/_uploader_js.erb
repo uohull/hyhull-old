@@ -1,12 +1,9 @@
 <script type="text/javascript">
           var myUploader = fluid.progressiveEnhanceableUploader(".flc-uploader", ".fl-progEnhance-basic", {
-                  uploadManager: {
+               uploadManager: {
                  type: "fluid.swfUploadManager",
       
-                 options: {
-					// Set the file metadata values
-					postParams: {"file":"", "contents":"", "type":""},
-					
+                 options: {					
                     // Set the uploadURL to the URL for posting files to your server.
                     uploadURL: "<%= file_assets_path(:container_id=> params[:container_id], :only_path => false) %>",
       
@@ -17,10 +14,8 @@
       
       listeners: {
 				  onFileStart: function(file){	
-					myUploader.uploadManager.options['postParams']['file'] = file;
-					myUploader.uploadManager.options['postParams']['contents'] = $('#asset_HydraMetadata_contents').val();
-					myUploader.uploadManager.options['postParams']['description'] = $('#asset_HydraMetadata_description').val();					
-					},
+					myUploader.uploadManager.options["postParams"] = {"contents":"testcontents", "description":"testdescription"};
+				   },
 	
                   onFileSuccess: function (file, serverData){},
       			 
