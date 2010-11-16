@@ -5,6 +5,7 @@ function async_load(url, divid) {
     dataType: "html",
     success: function(data){
             $(divid).html(data);
+            $("#file_assets  .select-edit").hydraSelectMenu();
             $("#file_assets  .editable-container").hydraTextField();
             $("#file_assets  a.destroy_file_asset").hydraFileAssetDeleteButton();
           }
@@ -57,8 +58,17 @@ jQuery(document).ready(function($) {
 	    clearStyle: false,
 	    collapsible: false,
 	    active: 0,
-	    icons: false
+	    icons: false,
+			fillSpace: true	
 	});	
+	$(function() {
+			$("#accordion").resizable({
+				minHeight: 140,
+				resize: function() {
+					$( "#accordion" ).accordion( "resize" );
+				}
+			});
+		});
 	
 	
 	// FORM BEHAVIOR	
