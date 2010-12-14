@@ -1,0 +1,93 @@
+h2. Course contentInfo
+
+<pre>
+<contentInfo type="course" objectId="marpa:xx123yy4567">
+
+   <resource id="talk1" sequence="1" type="marpa_lecture" objectId="marpa:rr123ss4567"/>
+   <resource id="talk2" sequence="2" type="marpa_lecture" objectId="marpa:rr123ss4567"/>
+   <resource id="talk3" sequence="3" type="marpa_lecture" objectId="marpa:rr123ss4567"/>
+
+</contentInfo>
+</pre>
+
+
+h2. Talk resourceInfo for talk1
+
+<pre>
+<resourceInfo>
+<file id="00000001.jp2" format="JPEG2000" mimetype="audio/mp3" size="169627">
+   <location type="url">http://service/pid/00000001.jp2</location>
+</file>
+<file id="00000001.html" format="text" mimetype="text/html" encoding="UTF-8" dataType="hocr" size="734">
+   <location type="url">http://service/pid/00000001.jp2</location>
+   <checksum type="md5">60dd37697f05073168b9b58ddaccad0a</checksum>
+   <checksum type="sha1">324b7650725011de8a390800200c9a66</checksum>
+</file>
+</resourceInfo>
+</pre>
+
+h2. Generating contentMetadata algorithmically
+
+grab the object's contentInfo
+for each resource, load the corresponding object and call resource_info_xml
+
+<pre>
+content_info_xml = course.content_info_xml
+
+content_info_xml.root.name = "contentMetadata"
+content_info_xml.xpath("//resource").each do |resource_node|
+  pid = resource_node.attr("objectId")
+  child = ActiveFedora::Base.load_instance(pid)
+  Hydra::ContentMetadata.resource_info_for(pid)
+end
+</pre>
+
+# Efficiently retrieve resourceInfo xml from an object
+# @param [pid] object to retrieve resourceInfo from
+
+<pre>
+def resource_info_for(pid)
+  resource_info_xml = Fedora::Repository.instance.get_content(pid, "resourceInfo")
+  resource_ng_xml = Nokogiri::XML::Document.parse(resource_info_xml)
+  return resource_ng_xml.xpath("//").to_xml
+end
+</pre>
+  
+contentInfo changes when:
+* ordering of children changes
+* children added/removed
+* "type" changes on a child??
+
+resourceInfo changes when:
+* a child object's files are changed/updated
+
+
+Problem: Figuring out where to store what
+
+Trying to keep track of (and need to know when generating a view):
+* list of children
+* sequence of childen
+* "type" of each child in context of parent
+* url for children's files
+* mimetype of children's files (ie audio vs video)
+
+h2. Solutions: 
+
+Store all of this info in the parent object 
+* causes replication of information across all of the parent objects
+* requires you to update all parent objects whenever files change in one of the children
+
+Store contentInfo in parent and resourceInfo in child
+* requires (often recursively) loading children's resourceInfo whenever displaying the parent 
+** could be done at index time, slowing down writes rather than reads
+** could be expedited by indexing children's resourceInfo into solr?
+
+
+h2. Problem: Child objects that are compound objects
+
+Solution: 
+* Store full contentMetadata datastream, but also put a reference to the _primary_ content in resourceInfo datastream
+* to accommodate multiple files/assets in resourceInfo datastream, add a <resourceInfo> root node? -- requires stripping this out when constructing parent contentMetadata...
+
+
+
