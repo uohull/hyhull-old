@@ -1,0 +1,25 @@
+Example: Course > Talk > S3Content & Uploaded Video
+
+h2. Course 
+
+At this level, we need URLs & metadata from content that's actually managed 2 layers down -- ie. the URL, mimetype & title of S3Content within each Talk in this Course
+
+Course View Wants: 
+
+* a list of Talks with urls for +the+ content (ie streaming url) for each Talk
+* info to tell you whether to render audio player, video player, or regular download link for each talk URL
+
+h2. Talk
+
+Talk view wants:
+
+* a player for +the+ content of the talk (stored as S3Content, Uploaded Video, etc.) -- need Title, URL and file size
+* a list of supplemental files -- need Title, URL and file size
+* info to tell you whether to render audio player, video player, or regular download link for each file URL
+
+h2. S3Content
+
+Extra curveball -- the urls for secure S3 content are time-sensitive; you must use the S3 API to generate a fresh authenticated URL when you display it to your users.
+S3Content view wants:
+ 
+* a player for +the+ content -- need Title, URL and file size
