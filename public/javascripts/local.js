@@ -37,6 +37,10 @@ function addTheCover(booksInfo)
 
 // JavaScript Document
 $(document).ready(function(){
+
+        if (show_view==true) {
+          $('div#yui-main div.yui-b').css("margin-left","10px");
+        }
         $(".slide_button").click(function(){
                 $("#slide_panel").slideToggle("slow");
                 $(this).toggleClass("minus_icon"); return false;

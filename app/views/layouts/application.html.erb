@@ -68,9 +68,9 @@
             <%= yield %>
           </div>
         </div>
-        
+        <% unless  sidebar_items.join('').blank? %>
         <div class="yui-b"><%= sidebar_items.join('') %></div>
-        
+        <% end %>
 	    </div>
 	    
 	    <div id="ft"><%= @footer %></div>
