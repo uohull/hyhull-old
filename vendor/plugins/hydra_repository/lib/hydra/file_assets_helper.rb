@@ -19,7 +19,8 @@ module Hydra::FileAssetsHelper
   # @param [FileAsset] the File Asset to add the blob to
   # @return [FileAsset] the File Asset  
   def add_posted_blob_to_asset(asset=@file_asset)
-    asset.add_file_datastream(params[:Filedata], :label=>params[:Filename], :mimeType=>mime_type(params[:Filename]))
+    file_name = params[:Filename] ? params[:Filename] : "filename"
+    asset.add_file_datastream(params[:Filedata], :label=>file_name, :mimeType=>mime_type(file_name))
   end
   
   # Creates a File Asset and sets its label from params[:Filename]
@@ -28,7 +29,7 @@ module Hydra::FileAssetsHelper
   def create_asset_from_params    
     file_asset = FileAsset.new
     file_asset.label = params[:Filename]
-    
+
     return file_asset
   end
   
