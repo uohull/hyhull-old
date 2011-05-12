@@ -1,0 +1,96 @@
+<form id="document_metadata" action="<%= url_for(:action=>"update", :controller=>"assets", :content_type=>"uketd_objects")%>" method="post" data-resourceType="uketd_objects" accept-charset="utf-8" >
+  <input type="hidden" name="content_type" value="uketd_objects" />
+  <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>" />
+  <fieldset class="edit-standard">
+  <legend>Author</legend>
+  <dl>
+    <dt>
+      <%= fedora_field_label("UKETD_DC",[:author],"Name") %>
+    </dt>
+    <dd>
+      <%= fedora_text_field(@document_fedora,"UKETD_DC",[:author]) %>
+    </dd>
+  </dl>
+  </fieldset>
+  <fieldset class="edit-standard">
+  <legend>Thesis or dissertation</legend>
+  <dl>
+    <dt>
+      <%= fedora_field_label("UKETD_DC",[:title],"Title") %>
+    </dt>
+    <dd>
+      <%= fedora_text_field(@document_fedora,"UKETD_DC", [:title], :multiple=>false) %>
+    </dd>
+    <dt>
+      <%= fedora_field_label("UKETD_DC",[:subject],"Subject") %>
+    </dt>
+    <dd>
+      <%= fedora_text_field(@document_fedora,"UKETD_DC", [:subject], :multiple=>true) %>
+    </dd>
+    <dt>
+      <%= fedora_field_label("UKETD_DC",[:abstract],"Abstract") %>
+    </dt>
+    <dd>
+      <%#= fedora_text_area(@document_fedora,"UKETD_DC", [:abstract], :multiple=>false) %>
+    </dd>
+    <dt>
+      <%= fedora_field_label("UKETD_DC",[:rights],"Rights") %>
+    </dt>
+    <dd>
+      <%#= fedora_text_field(@document_fedora,"UKETD_DC", [:rights], :multiple=>true) %>
+    </dd>
+    <dt>
+      <%= fedora_field_label("UKETD_DC",[:sponsor],"Sponsor") %>
+    </dt>
+    <dd> 
+      <%= fedora_text_field(@document_fedora,"UKETD_DC", [:sponsor], :multiple=>true) %>
+    </dd>
+    <dt>
+      <%= fedora_field_label("UKETD_DC",[:advisor],"Advisor") %>
+    </dt>
+      <dd> 
+      <%= fedora_text_field(@document_fedora,"UKETD_DC", [:advisor], :multiple=>true) %>
+    </dd>
+	<dt>
+      <%= fedora_field_label("UKETD_DC",[:issued],"Date issued") %>
+    </dt>
+      <dd> 
+      <%= fedora_text_field(@document_fedora,"UKETD_DC", [:issued], :multiple=>false) %>
+    </dd>
+	<dt>
+      <%= fedora_field_label("UKETD_DC",[:language],"Language") %>
+    </dt>
+    <dd> 
+      <%= fedora_select(@document_fedora,"UKETD_DC", [:issued], :choices=>["English","Spanish","French"] ) %>
+    </dd>
+	<dt>
+      <%= fedora_field_label("UKETD_DC",[:qualification_level],"Qualification level") %>
+    </dt>
+    <dd> 
+      <%= fedora_select(@document_fedora,"UKETD_DC", [:qualification_level], :choices=>["PhD","MSc","MA"]) %>
+    </dd>
+	<dt>
+      <%= fedora_field_label("UKETD_DC",[:qualification_name],"Qualification name") %>
+    </dt>
+    <dd> 
+      <%= fedora_select(@document_fedora,"UKETD_DC", [:qualification_name], :choices=>["Doctoral", "Postgraduate", "Undergraduate"]) %>
+    </dd>
+     <dt>
+      <%= fedora_field_label("UKETD_DC",[:institution],"Institution") %>
+    </dt>
+      <dd> 
+      <%= fedora_text_field(@document_fedora,"UKETD_DC", [:institution], :multiple=>false) %>
+    </dd>
+	<dt>
+      <%= fedora_field_label("UKETD_DC",[:department],"Department") %>
+    </dt>
+    <dd> 
+      <%= fedora_select(@document_fedora,"UKETD_DC", [:department], :choices=>["Computer Science", "The Business School", "Georgraphy"]) %>
+    </dd>
+  </dl>
+  </fieldset>
+  <input type="hidden"  name="_method" value="put"/>
+  
+  <%= submit_tag "Save" %>
+  <%= submit_tag "Submit" %>
+</form>
