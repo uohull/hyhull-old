@@ -1,4 +1,10 @@
 module HullModelMethods 
+  
+
+  def initialize(opts={})
+    super(opts)
+    change_queue_membership :proto unless queue_membership
+  end
 
   # call insert_subjec_topic on the descMetadata datastream
   def insert_subject_topic(opts={})
@@ -44,7 +50,7 @@ module HullModelMethods
   end
 
   def change_queue_membership(new_queue)
-    validation_method = "valid_for_#{new_queue.to_s}_queue?".to_sym
+    validation_method = "ready_for_#{new_queue.to_s}?".to_sym
     is_valid = self.respond_to?(validation_method) ? self.send(validation_method) : true
     
     if is_valid
