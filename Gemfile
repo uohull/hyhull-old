@@ -55,5 +55,5 @@ group :development, :test do
   gem 'cucumber', '>=0.8.5'
   gem 'cucumber-rails', '~> 0.3.2'  # cucumber-rail 0.4.0 and on requires Rails 3
   gem 'gherkin'
-  gem 'jettywrapper'
+  gem 'jettywrapper', :git => "git://github.com/projecthydra/jettywrapper.git"
 end

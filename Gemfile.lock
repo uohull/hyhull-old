@@ -1,3 +1,12 @@
+GIT
+  remote: git://github.com/projecthydra/jettywrapper.git
+  revision: d105119ae6f21f04981e7d6f1c67ca6d57e82480
+  specs:
+    jettywrapper (0.0.10)
+      childprocess
+      logger
+      mediashelf-loggable
+
 GEM
   remote: http://rubygems.org/
   remote: http://gemcutter.org/
@@ -30,6 +39,8 @@ GEM
     block_helpers (0.3.3)
       activesupport (>= 2.0)
     builder (3.0.0)
+    childprocess (0.2.2)
+      ffi (~> 1.0.6)
     columnize (0.3.2)
     crack (0.1.8)
     cucumber (0.10.2)
@@ -48,15 +59,16 @@ GEM
       nokogiri (>= 1.4.3)
     facets (2.8.4)
     fastercsv (1.5.4)
+    ffi (1.0.9)
     gherkin (2.3.7)
       json (>= 1.4.6)
     haml (3.1.1)
     httparty (0.7.7)
       crack (= 0.1.8)
-    jettywrapper (0.0.3)
     json (1.5.1)
     json_pure (1.5.1)
     linecache (0.43)
+    logger (1.2.8)
     marc (0.4.2)
     mediashelf-loggable (0.4.7)
     mime-types (1.16)
@@ -140,7 +152,7 @@ DEPENDENCIES
   gherkin
   haml
   httparty
-  jettywrapper
+  jettywrapper!
   json_pure (> 1.4.3)
   linecache
   marc

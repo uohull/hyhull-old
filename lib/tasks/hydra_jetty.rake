@@ -7,9 +7,9 @@ namespace :hydra do
     task :config_full_text do
       rm_r('jetty/solr/contrib') if File.exist?('jetty/solr/contrib')
       cp_r('solr/full_text_support/contrib','jetty/solr')
-      rm('jetty/solr/development-core/lib/apache-solr-cell-nightly.jar') if File.exist?('jetty/solr/development-core/lib/apache-solr-cell-nightly.jar')
+      rm('jetty/solr/contrib/extraction/lib/apache-solr-cell-nightly.jar') if File.exist?('jetty/solr/contrib/extraction/lib/apache-solr-cell-nightly.jar')
       FileList.new("solr/full_text_support/dist/*.jar").each do |file|
-        cp("#{file}", 'jetty/solr/development-core/lib/', :verbose => true)
+        cp("#{file}", 'jetty/solr/contrib/extraction/lib/', :verbose => true)
       end
     end
 

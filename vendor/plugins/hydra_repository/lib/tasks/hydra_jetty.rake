@@ -12,7 +12,8 @@ JETTY_PARAMS = {
   :jetty_home => ENV['HYDRA_JETTY_HOME'],
   :jetty_port => 8983,
   :solr_home => ENV['HYDRA_SOLR_HOME'],
-  :fedora_home => ENV['HYDRA_SOLR_HOME']
+  :fedora_home => ENV['HYDRA_SOLR_HOME'],
+  :java_opts => ["-XX:MaxPermSize=256m"]
 }
 
 #:jetty_port => ENV['HYDRA_JETTY_PORT'],
@@ -20,20 +21,18 @@ namespace :hydra do
   namespace :jetty do
     desc "Starts the bundled Hydra Testing Server"
     task :start => [:environment] do
-      Hydra::TestingServer.configure(JETTY_PARAMS)
-      Hydra::TestingServer.instance.start
+      Jettywrapper.start(JETTY_PARAMS)
     end
     
     desc "Stops the bundled Hydra Testing Server"
     task :stop => [:environment] do
-      Hydra::TestingServer.instance.stop
+      Jettywrapper.stop(JETTY_PARAMS)
     end
     
     desc "Restarts the bundled Hydra Testing Server"
     task :restart => [:environment] do
-      Hydra::TestingServer.instance.stop
-      Hydra::TestingServer.configure(JETTY_PARAMS)
-      Hydra::TestingServer.instance.start
+      Jettywrapper.stop(JETTY_PARAMS)
+      Jettywrapper.start(JETTY_PARAMS)
     end
 
     desc "Copies the default SOLR config for the bundled Hydra Testing Server"
@@ -62,7 +61,8 @@ namespace :hydra do
 
     desc "Returns the status of the Hydra::TestingServer."
     task :status => [:environment] do
-      status = Hydra::TestingServer.instance.pid ? "Running: #{Hydra::TestingServer.instance.pid}" : "Not running"
+      status = Jettywrapper.is_jetty_running?(JETTY_PARAMS) ? "Running: #{Jettywrapper.pid(JETTY_PARAMS)}" : "Not running"
+
       puts status
     end
   end
