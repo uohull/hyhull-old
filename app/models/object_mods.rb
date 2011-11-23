@@ -55,6 +55,16 @@ class ObjectMods < ActiveFedora::NokogiriDatastream
       builder = Nokogiri::XML::Builder.new {|xml| xml.topic }
       return builder.doc.root
     end
+    
+    def self.subject_temporal_template
+      builder = Nokogiri::XML::Builder.new {|xml| xml.temporal }
+      return builder.doc.root
+    end
+    
+    def self.subject_geographic_template
+      builder = Nokogiri::XML::Builder.new {|xml| xml.geographic }
+      return builder.doc.root
+    end
 
     def self.grant_number_template
       builder = Nokogiri::XML::Builder.new {|xml| xml.identifier(:type=>"grantNumber") }
@@ -127,7 +137,33 @@ class ObjectMods < ActiveFedora::NokogiriDatastream
 			self.dirty = true
 		end
 
+    def insert_subject(value, type="topic")        
+      case type
+      when "temporal"
+        node = ModsJournalArticle.subject_temporal_template
+        nodeset = self.subject.temporal.nodeset
+      when "geographic"
+        node = ModsJournalArticle.subject_geographic_template
+        nodeset = self.subject.geographic.nodeset
+      else
+        node = ModsJournalArticle.subject_topic_template
+        nodeset = self.subject.topic.nodeset
+      end
+
+      unless nodeset.nil?
+        node.content = value
+        nodeset.after(node)
+        index=nodeset.length
+        self.dirty = true
+      end
+      
+      return node, index
+
+    end
+    
     def insert_subject_topic(opts={})
+      logger.warn "Depracation: insert_subject_topic is deprecated.  Use insert_subject instead."
+      
       node = ModsJournalArticle.subject_topic_template
       nodeset = self.find_by_terms(:subject,:topic)
 

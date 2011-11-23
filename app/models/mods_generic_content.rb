@@ -119,7 +119,9 @@ class ModsGenericContent < ObjectMods
              }
              xml.abstract
              xml.subject(:authority=>"UoH") {
-               xml.topic
+               xml.topic 
+               xml.temporal
+               xml.geographic
              }
              xml.identifier(:type=>"fedora")
              xml.originInfo {

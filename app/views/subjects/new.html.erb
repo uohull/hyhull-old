@@ -2,7 +2,20 @@
   <%- new_topic_index = @document_fedora.datastreams["descMetadata"].find_by_terms(:subject,:topic).length %>
   <form id="add_contributor" action="<%= subjects_path(:asset_id=>params[:asset_id],:content_type=>params[:content_type]) %>" method="post" accept-charset="utf-8">
   <%= form_for 'subject', :url=>subjects_path(:asset_id=>params[:asset_id],:content_type=>params[:content_type]), :id=>'add_contributor' do %>
-      
-      <%= render :partial=>"subjects/edit", :locals=>{:edit =>{}, :edit_counter => 0, :topic_counter => new_topic_index } %>
+      <dl>
+        <dt>
+          <%=  label "subject_value", "Subject" %>
+        </dt>
+        <dd class="subject">
+          <%= text_field_tag "subject[value]" %>
+        </dd>
+        <dt>
+          <%= label "subject_type", "Type" %>
+        </dt>
+        <dd class="subject">
+          <%= select "subject", "type", options_for_select([["Topic", "topic"], ["Temporal", "temporal"], ["Geographic", "geographic"]]) %>
+        </dd>
+        
+      </dl>
       <%= submit_tag "Add Subject", {:id => "addSubject"} %> 
   <% end %>

@@ -1126,6 +1126,9 @@ fieldset.edit-half dd a.field {
   display: none;
 }
 
+dl.categorized {width:250px;}
+dl.categorized dt {float:right;}
+
 form#document_metadata legend {
   margin-top: .5em;
  /* margin-bottom: .8em !important;*/

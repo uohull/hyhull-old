@@ -42,7 +42,15 @@ module HullModelMethods
   end
 
   # call insert_subject_topic on the descMetadata datastream
+  def insert_subject(value, type=nil)
+    ds = self.descMetadata
+    node, index = ds.insert_subject(value, type)
+    return node, index
+  end
+  
+  # call insert_subject_topic on the descMetadata datastream
   def insert_subject_topic(opts={})
+    logger.warn "Depracation: insert_subject_topic is deprecated.  Use insert_subject instead."
     ds = self.descMetadata
     node, index = ds.insert_subject_topic(opts)
     if opts[:value]

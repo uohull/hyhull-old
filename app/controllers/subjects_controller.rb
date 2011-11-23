@@ -19,11 +19,8 @@ class SubjectsController < ApplicationController
   
   def create
     @document_fedora = load_document_from_id(params[:asset_id])
-     
-    inserted_node, new_node_index = @document_fedora.insert_subject_topic()
 
-    value = extract_value(params[:asset][:descMetadata])
-    inserted_node.inner_html = value if value
+    inserted_node, new_node_index = @document_fedora.insert_subject(params["subject"]["value"],params["subject"]["type"])
 
     @document_fedora.save
 
