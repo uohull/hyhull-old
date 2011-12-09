@@ -21,6 +21,14 @@ GIT
       xml-simple (>= 1.0.12)
 
 GIT
+  remote: git://github.com/nbudin/devise_cas_authenticatable.git
+  revision: 450cac6d76d2670e524f3fccbb47c37465178a6d
+  specs:
+    devise_cas_authenticatable (1.0.0.alpha13)
+      devise (>= 1.0.6)
+      rubycas-client (>= 2.2.1)
+
+GIT
   remote: git://github.com/projecthydra/hydra-head.git
   revision: 57adbe5f1ecc901024d807ea483ee88c3f3b4d0d
   ref: 57adbe5f1e
@@ -193,6 +201,7 @@ GEM
     multi_json (1.0.4)
     multi_xml (0.4.1)
     multipart-post (1.1.2)
+    mysql (2.8.1)
     nokogiri (1.5.0)
     nori (1.0.2)
     om (1.4.3)
@@ -252,6 +261,8 @@ GEM
       ruby-debug-base (~> 0.10.4.0)
     ruby-debug-base (0.10.4)
       linecache (>= 0.3)
+    rubycas-client (2.3.7)
+      activesupport
     rubydora (0.2.6)
       activemodel
       activesupport
@@ -263,7 +274,7 @@ GEM
     rubytree (0.8.1)
     rubyzip (0.9.5)
     sanitize (2.0.3)
-      nokogiri (< 1.6, >= 1.4.4)
+      nokogiri (>= 1.4.4, < 1.6)
     savon (0.9.7)
       akami (~> 1.0)
       builder (>= 2.1.2)
@@ -322,6 +333,7 @@ DEPENDENCIES
   cucumber
   cucumber-rails (~> 1.2.0)
   devise
+  devise_cas_authenticatable!
   equivalent-xml
   factory_girl_rails
   haml
@@ -329,6 +341,7 @@ DEPENDENCIES
   jettywrapper (>= 1.0.2)
   jquery-rails
   mocha
+  mysql (= 2.8.1)
   rails (= 3.0.10)
   rspec
   rspec-rails
