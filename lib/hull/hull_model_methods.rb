@@ -279,7 +279,7 @@ module HullModelMethods
 
   def copy_rights_metadata(apo)
 		rights = Hydra::RightsMetadata.new(self.inner_object, 'rightsMetadata')
-    Hydra::RightsMetadata.from_xml(apo.defaultObjectRights.content, rights)
+    rights.ng_xml = apo.defaultObjectRights.content
     defaultRights = NonindexingRightsMetadata.new(self.inner_object, 'defaultObjectRights')
     defaultRights.ng_xml = rights.ng_xml.dup
     datastreams["rightsMetadata"] = rights 
