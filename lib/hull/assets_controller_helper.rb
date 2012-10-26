@@ -19,63 +19,61 @@ module Hull::AssetsControllerHelper
 
   # Handles updating display set & structural set associations for an object
   # @param [ActiveFedora::Base] document to update membership for. Defaults to using @document
+  # This should probably be moved into a model method at a future date 
   def update_set_membership(document=@document)
+
     structural = params["Structural Set"]
     display = params["Display Set"]
     harvesting = params["Harvesting Set"]
 
-    #if a display set value is being passed but not a structural set...
-    if structural.nil? && !display.nil?
-      display = display.first if display.kind_of? Array
-      display = nil if display.empty?
-       if document.respond_to?(:apply_set_membership)
-        document.apply_set_membership([display].compact)
+    #if structural and display form elements are not nil (ie exist on the form)
+    if !structural.nil?  
+      structural = structural.first if structural.kind_of? Array
+
+      #When the object isn't in a queue and the set field is empty reject...
+      if document.queue_membership.empty? && structural.empty? 
+        flash[:error] = "Encountered the following errors: A structural set is required for published items"
+        redirect_to :controller => "catalog", :action=>"edit"
+        return
       end
-    else #all other cases... 
-      #when the structural form field is nil we don't do any 
-      #structural/display set (isMemberOf) changes 
+    end 
+
+    if !display.nil?
+      display = display.first if display.kind_of? Array
+    end
+
+    #Set the set_membership and governed_by for the object 
+    unless structural.nil? && display.nil?
+      if document.respond_to?(:apply_set_membership)
+        document.apply_set_membership([display, structural].compact)
+      end
+
+      #Code for setting the isGovernedBy for an object...
       unless structural.nil?
-        structural = structural.first if structural.kind_of? Array
-        if structural && structural.empty?
-          #Only set the queue membership to :proto if it doesn't have set, or already belong to proto/qa queue
-			    unless document.queue_membership.to_s == "proto" || document.queue_membership.to_s == "qa"
-       	    document.change_queue_membership :proto
-      	     structural = nil
-			    end
+        #Only set governedBy if the object isn't within a queue (i.e. proto/qa/hidden/deleted - these dictate APO)
+        if document.queue_membership.empty?
+          if document.respond_to?(:apply_governed_by)
+            #When an object is a StructuralSet, apply the hull-apo:structuralSet as governing APO 
+            if document.kind_of? StructuralSet
+              document.apply_governed_by('hull-apo:structuralSet')
+              document.copy_default_object_rights(structural.gsub('info:fedora/', '')) 
+            else
+              document.apply_governed_by(structural)
+            end
+          end
         end
-        unless display.nil?
-          display = display.first if display.kind_of? Array
-          display = nil if display.empty?
-        end
-     
-        if document.respond_to?(:apply_set_membership)
-          document.apply_set_membership([display, structural].compact)
-        end
-		  
-        # when the document is a structural set, we apply the hull-apo:structuralSet as the governing apo
-        # otherwise, the structural set the governing apo
-        # unless the object is within queue, in which case the queue dictates the governedBy
-  	    unless document.queue_membership.to_s == "proto" || document.queue_membership.to_s == "qa"
-        if document.respond_to?(:apply_governed_by)
-          if document.kind_of? StructuralSet
-            document.apply_governed_by('hull-apo:structuralSet')
-            document.copy_default_object_rights(structural.gsub("info:fedora/", '')) if structural
-          elsif structural
-        	  document.apply_governed_by(structural)
-     	    end
-    	  end
- 		   end
       end
     end
 
-    #unless the harvesting field is nil...  
-    unless harvesting.nil?
+    #Set the harvesting set if select form field exists..  
+    if !harvesting.nil?
       harvesting = harvesting.first if harvesting.kind_of? Array
       #if the document model allows setting of harvesting set....
-		    if document.respond_to?(:apply_harvesting_set_membership)
-			    document.apply_harvesting_set_membership([harvesting].compact)
-		    end
-    end
+      if document.respond_to?(:apply_harvesting_set_membership)
+        document.apply_harvesting_set_membership([harvesting].compact)
+      end
+    end 
+
 	end
 
   def validate_parameters

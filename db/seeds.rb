@@ -12,4 +12,4 @@
 #Clear existing data
 Role.delete_all
 #Re-seed the data
-["contentAccessTeam", "staff", "student", "committeeSection", "engineering", "guest"].each {|r| Role.create(:name => r, :description => r) } 
+["contentAccessTeam", "staff", "student", "committeeSection", "engineering", "guest", "admin"].each {|r| Role.create(:name => r, :description => r) } 

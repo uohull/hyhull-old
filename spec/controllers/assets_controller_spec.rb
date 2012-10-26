@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'user_helper'
 
 
 # See cucumber tests (ie. /features/edit_document.feature) for more tests, including ones that test the edit method & view
@@ -142,14 +143,91 @@ describe AssetsController do
 
       put :update, {:id=>"_PID_"}.merge(simple_request_params)
     end
-    
+
+
+    #This and the following test check that the objects do not
+    #change sets or permissions incorrectly..
+    # This functionality should be moved into the model methods in the future
+    describe "a published ukedt object" do
+      include UserHelper
+      before do
+        @pid_id = "hull:3500"
+        @hull_3500 = UketdObject.find(@pid_id)
+      end
+
+      it "should not be possible to set a blank structural set" do
+      simple_request_params = {
+        "asset"=>{
+          "descMetadata"=>{
+            :title_info_main_title=>{"0"=>"Main Title"},
+            :person_0_namePart =>{"0"=>"Author's name"},
+            :origin_info_date_issued =>{"0" => ''}
+          }
+        },
+          "field_selectors"=>{
+          "descMetadata"=>{
+            "title_info_main_title"=>[":title_info", ":main_title"],
+            "person_0_namePart"=>[{":person"=>0}, ":namePart"],
+            "origin_info_date_issued"=>[":origin_info", ":date_issued"]
+        }
+        }, 
+          "content_type"=>"uketd_object",
+          "Structural Set" => [""],
+          "Display Set" => ["info:fedora/hull:700"]
+      }
+        #Need to be authenticated as the CAT member
+        cat_user_sign_in   
+        put :update, {:id=>@hull_3500.pid}.merge(simple_request_params)
+        @updated = UketdObject.find(@hull_3500.pid)
+
+        flash.now[:error].should include("A structural set is required for published items")
+        @updated.relationships(:is_member_of).should include("info:fedora/hull:3375")
+      end
+
+    end
+
+
+    describe "an object that is in the Deleted queue" do
+      include UserHelper
+      before do
+        @deleted_object_id = "hull:4775"
+        @deleted_object = ExamPaper.find(@deleted_object_id)
+        #Make sure that the set membership is reset to hull:4756
+        @deleted_object.apply_set_membership(["info:fedora/hull:4756"])
+        @deleted_object.save
+      end
+
+      it "should not be possible to update change the permissions based on structural set update" do
+        #Will attempt to update the structural set to hull:3375...
+        simple_request_params = {
+          "content_type"=>"exam_paper",
+          "Structural Set" => ["info:fedora/hull:3375"]
+        }
+  
+        admin_user_sign_in
+
+        put :update, {:id=>@deleted_object.pid}.merge(simple_request_params)        
+        @deleted_object = ExamPaper.find(@deleted_object.pid)
+
+        @deleted_object.relationships(:is_member_of).should include("info:fedora/hull:3375", "info:fedora/hull:deletedQueue")
+        #Essential that the is_governed_by remains the deleteQueue..
+        @deleted_object.relationships(:is_governed_by).should == ["info:fedora/hull:deletedQueue"]
+        #...and that the rights remain the same as expected for the admin queue...
+        @deleted_object.rightsMetadata.groups.should == {"admin"=>"edit"}
+        @deleted_object.rightsMetadata.individuals.should == {}
+      end
+    end
+
 
     describe "a ukedt object" do
+      include UserHelper
       before do
         ActiveFedora::RubydoraConnection.instance.connection
         @obj = UketdObject.new
         @obj.update_indexed_attributes({[{:person=>0}, :institution]=>"my org"}, :datastreams=>"descMetadata") #we need this or else we don't get a descMetadata ds (causes uketd_dc dissem error)
         @obj.dc.update_indexed_attributes([:dc_genre]=>"Thesis or Dissertation")
+        #This object should be editable by the CAT group for this test...
+        @obj.rightsMetadata.update_permissions({"group"=>{"contentAccessTeam"=>"discover","contentAccessTeam"=>"edit"}})
         @obj.save
       end
       it "should add the object to structural and display sets" do
@@ -172,12 +250,13 @@ describe AssetsController do
           "Structural Set" => ["info:fedora/hull:3375"],
           "Display Set" => ["info:fedora/hull:700"]
         }
+
+        #Need to be authenticated as the CAT member
+        cat_user_sign_in   
         put :update, {:id=>@obj.pid}.merge(simple_request_params)
         @updated = UketdObject.find(@obj.pid)
         @updated.relationships(:is_member_of).should include("info:fedora/hull:3375", "info:fedora/hull:700")
-        #@updated.relationships(:is_governed_by).should == ["info:fedora/hull:3375"]
-				    #The object isn't governed_by the structural set until it's published
-				    @updated.relationships(:is_governed_by).should == ["info:fedora/hull:protoQueue"]
+				@updated.relationships(:is_governed_by).should == ["info:fedora/hull:protoQueue"]
       end
       after do
         @obj.delete
