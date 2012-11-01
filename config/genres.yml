@@ -10,6 +10,9 @@ Artwork:
 Diagram:
  type: image
  c_model: hull-cModel:diagram
+Drawing:
+ type: image
+ c_model: hull-cModel:drawing
 Map:
  type: image
  c_model: hull-cModel:map
@@ -67,6 +70,9 @@ Licence:
 Meeting papers or minutes:
  type: text
  c_model: hull-cModel:meetingPaper
+Music score:
+ type: text
+ c_model: hull-cModel:musicScore
 Newsletter article:
  type: text
  c_model: hull-cModel:genericContent
