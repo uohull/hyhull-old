@@ -1,6 +1,6 @@
 source 'http://rubygems.org'
 
-gem 'rails', '3.0.19'
+gem 'rails', '3.0.20'
 gem 'jquery-rails'
 
 gem 'blacklight', '~>3.1.2'  
