@@ -10,7 +10,7 @@ gem 'solrizer-fedora', '>=1.2.0'
 gem 'hydra-head',  '3.2.1'
 gem 'active-fedora', '3.3.1'
 gem 'haml'
-gem "devise"
+gem 'devise', '1.5.4'
 gem 'will_paginate'
 gem 'rubytree'
 gem 'devise_cas_authenticatable', '~>1.0.0'
