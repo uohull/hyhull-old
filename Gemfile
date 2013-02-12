@@ -1,6 +1,9 @@
 source 'http://rubygems.org'
 
-gem 'rails', '3.0.20'
+#gem 'rails', '3.0.20'
+#Update to patched rails stable branch
+gem 'rails', :git => 'git://github.com/rails/rails', :branch => '3-0-stable'
+
 gem 'jquery-rails'
 
 gem 'blacklight', '~>3.1.2'  
