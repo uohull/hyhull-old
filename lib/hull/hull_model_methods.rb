@@ -489,9 +489,13 @@ module HullModelMethods
   # Extract content from all child assets with a content datastream with a mime type of application/pdf
   def retrieve_child_asset_pdf_content
     content = parts.each.inject("") do |extracted_content, child|
-      if child.datastreams.keys.include?("content") and child.datastreams["content"].mimeType == 'application/pdf' and child.datastreams["content"].size < index_file_size_limit
-        extracted_content << datastream_content(child.pid,child.datastreams["content"])
-        extracted_content << " "
+      if child.datastreams.keys.include?("content") and child.datastreams["content"].mimeType == 'application/pdf'
+        if child.datastreams["content"].size < index_file_size_limit
+          extracted_content << datastream_content(child.pid,child.datastreams["content"])
+          extracted_content << " "
+        else
+            logger.error "Full text indexing: #{child.pid} Datastream content not extracted, file size is greater than: #{index_file_size_limit}" 
+        end
       end
       extracted_content
     end
@@ -500,9 +504,13 @@ module HullModelMethods
   # Extract content from all internal datastreams where mime type is application/pdf
   def retrieve_internal_datastream_pdf_content
     content = datastreams.values.each.inject("") do |extracted_content, datastream|
-      if datastream.mimeType == 'application/pdf' and datastream.size < index_file_size_limit
-        extracted_content << datastream_content(pid,datastream)
-        extracted_content << " "
+      if datastream.mimeType == 'application/pdf'
+	       if datastream.size < index_file_size_limit
+          extracted_content << datastream_content(pid,datastream)
+          extracted_content << " "
+        else
+           logger.error "Full text indexing: #{self.pid} Datastream '#{datastream.dsid}' not extracted, file size is greater than: #{index_file_size_limit}"
+        end
       end
       extracted_content
     end
@@ -518,7 +526,6 @@ module HullModelMethods
   end
 
   def extract_content(filename)
-    debugger
     logger.error "Extracting content from #{filename.path}"
     url = "#{ActiveFedora.solr_config[:url]}/update/extract?defaultField=content&extractOnly=true"
     begin
@@ -561,10 +568,6 @@ module HullModelMethods
     
     # Re-index the object
     Solrizer::Fedora::Solrizer.new.solrize(self.pid) 
-
-  end
-
-  def valid_for_text_extract
 
   end
 
