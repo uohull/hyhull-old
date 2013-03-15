@@ -155,7 +155,7 @@ function polygonPlacemarks(coords, coords_title) {
 function addInfoWindowTextMarkerToMap(marker, map, text) {
 
  if (text.length > 0) {
-   info_text = '<div id="content"><h2>Description</h2><p>' + text + '</p></div>';
+   info_text = '<div id="content"><p>' + text + '</p></div>';
 
    var infowindow = new google.maps.InfoWindow({
     content: info_text
