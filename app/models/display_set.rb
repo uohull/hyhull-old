@@ -37,7 +37,7 @@ class DisplaySet < ActiveFedora::Base
 
   def self.tree
     sets = build_array_of_parents_and_children
-    root_node = build_children(Tree::TreeNode.new("Root set", "info:fedora/hull:rootDisplaySet"), sets)
+    root_node = build_children(DisplaySetTree.new("Root set", "info:fedora/hull:rootDisplaySet"), sets)
   end
 
   def self.parent_graph
@@ -88,7 +88,7 @@ class DisplaySet < ActiveFedora::Base
   def self.build_children node, nodes
     if nodes.fetch(node.content,nil)
       nodes[node.content][:children].each do |child|
-        child_node = Tree::TreeNode.new(child["title_t"].first,"info:fedora/#{child["id_t"].first}")
+        child_node = DisplaySetTree.new(child["title_t"].first,"info:fedora/#{child["id_t"].first}")
         node << build_children(child_node, nodes)
       end
     end
@@ -99,8 +99,8 @@ class DisplaySet < ActiveFedora::Base
 
 end
 
-class Tree::TreeNode
-  def options_for_nested_select(args ={},level=0)
+class DisplaySetTree < Tree::TreeNode
+  def options_for_nested_select(args={},level=0)
     args[:options] ||= []
     if is_root?
       pad = ''
@@ -122,3 +122,5 @@ class Tree::TreeNode
     
   end
 end
+
+
