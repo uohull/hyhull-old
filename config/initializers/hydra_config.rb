@@ -21,6 +21,10 @@ GROUP_PERMISSIONS = {
 	"create_resources" => ["contentAccessTeam"]
 }
 
+# To determine the maximum filesize for text extraction for full-text-indexing
+# Set to 2097152 bytes to match the current default Apache Solr 2048KB multi-part upload limit
+MAX_TEXT_EXTRACT_FILESIZE = 2097152
+
 
 if Hydra.respond_to?(:configure)
   Hydra.configure(:shared) do |config|

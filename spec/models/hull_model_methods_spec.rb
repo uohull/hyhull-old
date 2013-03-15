@@ -205,6 +205,12 @@ describe HullModelMethods do
       etd.extract_content(file).should_not be_empty
     end
 
+#TODO Add test ensure large pdfs do not got full-text indexed...
+#    it "should not full text index a pdf larger then the max size limit" do
+#      etd = UketdObject.load_instance "hull:3875"
+#						solr_doc = etd.to_solr
+#    end
+
     context "atomistic" do
       it "should index child objects' binary files as full text in the content field" do
         etd = UketdObject.load_instance "hull:3108"

@@ -490,8 +490,12 @@ module HullModelMethods
   def retrieve_child_asset_pdf_content
     content = parts.each.inject("") do |extracted_content, child|
       if child.datastreams.keys.include?("content") and child.datastreams["content"].mimeType == 'application/pdf'
-        extracted_content << datastream_content(child.pid,child.datastreams["content"])
-        extracted_content << " "
+        if child.datastreams["content"].size < index_file_size_limit
+          extracted_content << datastream_content(child.pid,child.datastreams["content"])
+          extracted_content << " "
+        else
+            logger.error "Full text indexing: #{child.pid} Datastream content not extracted, file size is greater than: #{index_file_size_limit}" 
+        end
       end
       extracted_content
     end
@@ -501,8 +505,12 @@ module HullModelMethods
   def retrieve_internal_datastream_pdf_content
     content = datastreams.values.each.inject("") do |extracted_content, datastream|
       if datastream.mimeType == 'application/pdf'
-        extracted_content << datastream_content(pid,datastream)
-        extracted_content << " "
+	       if datastream.size < index_file_size_limit
+          extracted_content << datastream_content(pid,datastream)
+          extracted_content << " "
+        else
+           logger.error "Full text indexing: #{self.pid} Datastream '#{datastream.dsid}' not extracted, file size is greater than: #{index_file_size_limit}"
+        end
       end
       extracted_content
     end
@@ -561,6 +569,11 @@ module HullModelMethods
     # Re-index the object
     Solrizer::Fedora::Solrizer.new.solrize(self.pid) 
 
+  end
+
+  #See hydra-config.rb for details about this index file size limit 
+  def index_file_size_limit
+    return MAX_TEXT_EXTRACT_FILESIZE
   end
 
 end
