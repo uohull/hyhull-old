@@ -12,8 +12,9 @@ xml.rss(:version=>"2.0") {
         xml.title( doc[:title_t][0] || doc[:id] )                              
         xml.link(catalog_url(doc[:id]))                                   
         #xml.author( doc.to_semantic_values[:author][0] ) if doc.to_semantic_values[:author][0]  
-        authors = get_persons_from_roles(doc, ['creator','author']).map {|person| person[:name]} 
-        xml.author( authors.join("; ") ) if authors.present?   
+        authors  = get_persons_from_roles(doc, ['creator','author'])
+        names = authors.map {|person| person[:name]}  if authors.present?
+        xml.author( names.join("; ") ) if names.present?   
       end
     end
           
